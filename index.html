@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Submission</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 300px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="number"],
+    input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+
+<form id="myForm">
+    <label for="id">ID:</label><br>
+    <input type="number" id="id" name="id" required><br>
+    <label for="type">Type:</label><br>
+    <input type="text" id="type" name="type" required><br>
+    <label for="number">Number:</label><br>
+    <input type="text" id="number" name="number" required><br>
+    <label for="comment">Comment:</label><br>
+    <input type="text" id="comment" name="comment" required><br><br>
+    <button type="button" onclick="submitForm()">SAVE</button>
+</form>
+
+<script>
+//     function submitForm() {
+//     const form = document.getElementById('myForm');
+//         const formData = new FormData(form);
+        
+//         fetch('http://localhost:3001/api/aimtarget/create', {
+//             method: 'POST',
+//             body: formData,
+//             body: JSON.stringify(Object.fromEntries(formData))
+//         })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             console.log('Success:', data);
+            
+//             const socket = new WebSocket('ws://localhost:3001/api/aimtarget/create');
+//             socket.onopen = () => {
+//                 console.log('Connected to WebSocket server');
+//             };
+//             socket.onmessage = (event) => {
+//                 const responseData = JSON.parse(event.data);
+//                 console.log('Received response from server:', responseData);
+//                 // Handle the response data from the server
+//             };
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             // Handle error here
+//         });
+// }
+const thisForm = document.getElementById('myForm');
+thisForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const formData = new FormData(thisForm).entries()
+    const response = await fetch('localhost:3001/api/aimtarget/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(formData))
+    });
+
+    console.log('Success:', esponse);
+            
+            const socket = new WebSocket('ws://localhost:3001/api/aimtarget/create');
+            socket.onopen = () => {
+                console.log('Connected to WebSocket server');
+            };
+            socket.onmessage = (event) => {
+                const responseData = JSON.parse(event.response);
+                console.log('Received response from server:', responseData);
+                // Handle the response data from the server
+            };
+});
+
+</script>
+
+</body>
+</html>
